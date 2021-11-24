@@ -78,8 +78,10 @@ func (a *AlertSettings) EmailYouHaveBeenEnrolledTemplate(emailService email.Emai
 					</html>`, a.DisplayName, a.CadenceInMinutes, a.getCitiesHtml(), a.getSubdivisionsHtml(), a.getHouseTypeHtml(), a.getZoningHtml(), a.getAllOtherQueryHtml())
 
 	for _, email := range a.SendAlertsTo {
-
-		_ = emailService.SendEmail([]string{email}, []byte(subject+mime+message))
+		err := emailService.SendEmail([]string{email}, []byte(subject+mime+message))
+		if err != nil {
+			fmt.Println("Error sending welcome email: err | " + err.Error())
+		}
 	}
 
 }
